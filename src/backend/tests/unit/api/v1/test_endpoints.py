@@ -99,6 +99,33 @@ async def test_custom_component(client: AsyncClient, logged_in_headers, basic_co
     assert "type" in result, "The dictionary must contain a key called 'type'"
 
 
+async def test_custom_component_update(client: AsyncClient, logged_in_headers, basic_component):
+    basic_case = basic_component.copy()
+    basic_case |= {"field": "string", "field_value": "string", "template": {}}
+    response = await client.post("api/v1/custom_component/update", json=basic_case, headers=logged_in_headers)
+    result = response.json()
+
+    assert response.status_code == status.HTTP_200_OK
+    assert isinstance(result, dict), "The result must be a dictionary"
+    assert "template" in result, "The dictionary must contain a key called 'template'"
+    assert "description" in result, "The dictionary must contain a key called 'description'"
+    assert "icon" in result, "The dictionary must contain a key called 'icon'"
+    assert "base_classes" in result, "The dictionary must contain a key called 'base_classes'"
+    assert "display_name" in result, "The dictionary must contain a key called 'display_name'"
+    assert "documentation" in result, "The dictionary must contain a key called 'documentation'"
+    assert "custom_fields" in result, "The dictionary must contain a key called 'custom_fields'"
+    assert "output_types" in result, "The dictionary must contain a key called 'output_types'"
+    assert "pinned" in result, "The dictionary must contain a key called 'pinned'"
+    assert "conditional_paths" in result, "The dictionary must contain a key called 'conditional_paths'"
+    assert "frozen" in result, "The dictionary must contain a key called 'frozen'"
+    assert "outputs" in result, "The dictionary must contain a key called 'outputs'"
+    assert "field_order" in result, "The dictionary must contain a key called 'field_order'"
+    assert "beta" in result, "The dictionary must contain a key called 'beta'"
+    assert "legacy" in result, "The dictionary must contain a key called 'legacy'"
+    assert "edited" in result, "The dictionary must contain a key called 'edited'"
+    assert "metadata" in result, "The dictionary must contain a key called 'metadata'"
+
+
 async def test_get_config(client: AsyncClient):
     response = await client.get("api/v1/config")
     result = response.json()
