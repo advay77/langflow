@@ -128,9 +128,9 @@ export default function NodeToolbarComponent({
   }
   // Check if any of the data.node.template fields have tool_mode as True
   // if so we can show the tool mode button
-  const hasToolMode = Object.values(data.node!.template).some(
-    (field) => field.tool_mode,
-  );
+  const hasToolMode =
+    data.node?.template &&
+    Object.values(data.node.template).some((field) => field.tool_mode);
 
   function openDocs() {
     if (data.node?.documentation) {
@@ -336,9 +336,11 @@ export default function NodeToolbarComponent({
   };
 
   const [toolMode, setToolMode] = useState(() => {
-    // Check if any template field has tool_mode set to true
-    return Object.values(data.node!.template).some(
-      (field) => field.tool_mode === true,
+    // Check if there is exactly one output named 'component_as_tool'
+    return (
+      data.node?.outputs?.some(
+        (output) => output.name === "component_as_tool",
+      ) ?? false
     );
   });
 
